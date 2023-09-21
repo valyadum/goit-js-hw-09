@@ -31,13 +31,6 @@ startBtn.setAttribute("disabled", "disabled");
 flatpickr('input#datetime-picker', options);
 startBtn.addEventListener('click', calcTime);
 
-// const timer = {
-//     start(selectedDates) {
-//         const currentTime = Date.now();
-//         const choseTime = selectedDates[0].getTime();
-//         console.log(choseTime);
-//     }
-// }
 function convertMs(ms) {
     // Number of milliseconds per unit of time
     const second = 1000;
