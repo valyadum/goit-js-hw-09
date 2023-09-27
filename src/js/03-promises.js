@@ -14,6 +14,10 @@ function handleSubmit(event) {
     const stepDelay = Number(form.elements.step.value);
     delay = firstDelay;
     //position = 1;
+    if (stepDelay < 0 || firstDelay < 0 || number <= 0) {
+        Notify.warning('Введіть дані більше 0!');
+        return;
+    }
 
     for (position = 1; position <= number; position++) {
         createPromise(position, delay)

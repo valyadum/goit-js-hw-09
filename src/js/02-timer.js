@@ -3,10 +3,13 @@ import "flatpickr/dist/flatpickr.min.css";
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 const startBtn = document.querySelector('button[data-start]');
+const resetBtn = document.querySelector('button[data-reset]');
+
 const day = document.querySelector('span[data-days]');
 const hour = document.querySelector('span[data-hours]');
 const minute = document.querySelector('span[data-minutes]');
 const second = document.querySelector('span[data-seconds]');
+const input = document.querySelector('#datetime-picker');
 let choseTime;
 let intervalId = null;
 
@@ -22,14 +25,20 @@ const options = {
             //window.alert("Please choose a date in the future");
         }
         else {
-            startBtn.removeAttribute("disabled", "disabled");   
+            startBtn.removeAttribute("disabled", "disabled"); 
+            resetBtn.removeAttribute("disabled", "disabled");
+            input.setAttribute("disabled", "disabled");
+          
+            
         }
     },
 };
 
 startBtn.setAttribute("disabled", "disabled");
+resetBtn.setAttribute("disabled", "disabled");
 flatpickr('input#datetime-picker', options);
 startBtn.addEventListener('click', calcTime);
+resetBtn.addEventListener('click', resetData);
 
 function convertMs(ms) {
     // Number of milliseconds per unit of time
@@ -55,15 +64,17 @@ function addLeadingZero(value) {
 function calcTime() {
     // console.log(choseTime);
     startBtn.setAttribute("disabled", "disabled");
+   
     intervalId = setInterval(() => {
         let differentTime = convertMs(choseTime - Date.now()); 
     
         let deltaTime = choseTime - Date.now();
         console.log(deltaTime);
+
         if (deltaTime < 0 ) {
         //window.alert('Finish');
          Notify.success('Hooray!! The event has begun!');
-         clearInterval(intervalId);
+            clearInterval(intervalId);
         return;
     }
       
@@ -73,8 +84,13 @@ function calcTime() {
             second.textContent = `${differentTime.seconds}`;
            
         
-    },1000)
-   
-    
-    
+    },1000)  
+}
+function resetData() {
+    input.removeAttribute("disabled", "disabled");
+    clearInterval(intervalId);
+    day.textContent = `00`;
+    hour.textContent = `00`;
+    minute.textContent = `00`;
+    second.textContent = `00`;
 }
